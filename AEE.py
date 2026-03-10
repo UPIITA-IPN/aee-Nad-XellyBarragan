@@ -1,45 +1,36 @@
-def gcd(a, b):
-    # Guardamos originales
-    a_orig, b_orig = a, b
-    
-    # Ajuste de valores iniciales para que x corresponda a 'a' y 'y' a 'b'
-    # En la identidad ax + by = gcd
-    x0, x1 = 1, 0  # Coeficientes para 'a'
-    y0, y1 = 0, 1  # Coeficientes para 'b'
-    
-    print(f"\n---Algoritmo Extendido para gCD({a}, {b}) ---")
-    
-    while b != 0:
-        q = a // b
-        r = a % b
-        
-        print(f"División: {a:4} = {q:2} * {b:3} + {r:3}")
-        
-        # Actualizamos a y b
-        a, b = b, r
-        
-        # Actualizamos coeficientes x e y
-        # Nueva x = x_anterior - q * x_actual
-        x0, x1 = x1, x0 - q * x1
-        y0, y1 = y1, y0 - q * y1
+import sys
 
-    # Al terminar el bucle, los coeficientes correctos quedaron en x0 y y0
-    return a, x0, y0
+def get_inverse(a, n):
+    # Algoritmo Extendido de Euclides simplificado
+    a_orig, n_orig = a, n
+    x0, x1 = 1, 0
+    
+    while n != 0:
+        q = a // n
+        a, n = n, a % n
+        x0, x1 = x1, x0 - q * x1
+    
+    # Si el MCD no es 1, no hay inverso multiplicativo
+    if a != 1:
+        return None
+    
+    # El inverso es x0, ajustado al módulo n_orig
+    return x0 % n_orig
 
 if __name__ == "__main__":
-    val_a = 3
-    val_b = 26
-    
-    mcd, x, y = gcd(val_a, val_b)
-    
-    print("-" * 50)
-    print(f"RESULTADO FINALE:")
-    print(f"Máximo Común Divisor (gcd): {gcd}")  
-    print(f"Coeficiente x (para {val_a}): {x}")
-    print(f"Coeficiente y (para {val_b}): {y}")
-    print("-" * 50)
-    
-    
-    # Esta vez la verificación DEBE dar el MCD (2)
-    verificacion = (val_a * x) + (val_b * y)
-    print(f"Verificación: {val_a}({x}) + {val_b}({y}) = {verificacion}")
+    if len(sys.argv) != 3:
+        sys.exit(1)
+
+    try:
+        val_a = int(sys.argv[1])
+        val_n = int(sys.argv[2])
+        
+        inverso = get_inverse(val_a, val_n)
+        
+        if inverso is not None:
+            print(inverso)
+        else:
+            print(f"No existe inverso para {val_a} mod {val_n}")
+            
+    except ValueError:
+        sys.exit(1)

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 
 def get_inverse(a, n):
@@ -16,8 +18,11 @@ def get_inverse(a, n):
 
 
 if __name__ == "__main__":
-    a = int(sys.argv[1])
-    n = int(sys.argv[2])
+    # Usar argumentos si se pasan, sino leer desde stdin
+    if len(sys.argv) >= 3:
+        a, n = int(sys.argv[1]), int(sys.argv[2])
+    else:
+        a, n = map(int, input().split())
 
     inv = get_inverse(a, n)
 
